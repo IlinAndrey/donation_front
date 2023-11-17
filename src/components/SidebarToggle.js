@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Sidebar from "./Sidebar";
 
-function SidebarToggle({ sidebarOpen, toggleSidebarOpen }) {
+function SidebarToggle({ sidebarOpen, toggleSidebarOpen}) {
   function handleClickSidebarOpen() {
     toggleSidebarOpen(sidebarOpen);
   }

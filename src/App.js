@@ -1,4 +1,4 @@
-import { useState, useRef, useLayoutEffect } from "react";
+import { useEffect, useState, useRef, useLayoutEffect } from "react";
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
 import SidebarToggle from "./components/SidebarToggle";
@@ -8,8 +8,13 @@ import SomePage from "./pages/SomePage";
 function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 1024);
- 
-  function toggleSidebarOpen(callbackSidebarOpen) {
+  const [darkMode, setDarkMode] = useState(false);
+
+  const toggleDarkMode = () => {
+    setDarkMode(!darkMode);
+  };
+
+  function toggleSidebarOpen() {
     setSidebarOpen((callbackSidebarOpen) => !callbackSidebarOpen);
   }
 
@@ -29,23 +34,29 @@ function App() {
 
     handleResize();
 
-    window.addEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
 
     return () => {
-      window.removeEventListener('resize', handleResize);
+      window.removeEventListener("resize", handleResize);
     };
   }, []);
 
   return (
     <>
-      <div className="bg-gray-50 dark:bg-slate-900">
-        <Header />
-        <SidebarToggle
-          toggleSidebarOpen={toggleSidebarOpen}
-          sidebarOpen={sidebarOpen}
-        />
-        <Sidebar isOpen={sidebarOpen} menuRef={menuRef} isSmallScreen={isSmallScreen}/>
-        <SomePage />
+      <div className={`${darkMode && "dark"}`}>
+        <div className="bg-gray-50 dark:bg-slate-900">
+          <Header toggleDarkMode={toggleDarkMode} darkMode={darkMode} />
+          <SidebarToggle
+            toggleSidebarOpen={toggleSidebarOpen}
+            sidebarOpen={sidebarOpen}
+          />
+          <Sidebar
+            isOpen={sidebarOpen}
+            menuRef={menuRef}
+            isSmallScreen={isSmallScreen}
+          />
+          <SomePage toggleDarkMode={toggleDarkMode} darkMode={darkMode} />
+        </div>
       </div>
     </>
   );
