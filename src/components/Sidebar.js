@@ -1,6 +1,18 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 
-function Sidebar({ isOpen, menuRef}) {
+function Sidebar({ isOpen, menuRef }) {
+  const [accordionState, setAccordionState] = useState({
+    users: false,
+    account: false,
+    projects: false,
+  });
+
+  const toggleAccordion = (section) => {
+    setAccordionState((prevState) => ({
+      ...prevState,
+      [section]: !prevState[section],
+    }));
+  };
 
   return (
     <div
@@ -54,7 +66,11 @@ function Sidebar({ isOpen, menuRef}) {
           <li className="hs-accordion active" id="users-accordion">
             <button
               type="button"
-              className="hs-accordion-toggle w-full text-start flex items-center gap-x-3.5 py-2 px-2.5 hs-accordion-active:text-blue-600 hs-accordion-active:hover:bg-transparent text-sm text-slate-700 rounded-lg hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-900 dark:text-slate-400 dark:hover:text-slate-300 dark:hs-accordion-active:text-white dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
+              className={`hs-accordion-toggle text-sm w-full text-start flex items-center gap-x-3.5 py-2 px-2.5 
+          ${accordionState.users ? "text-blue-600" : "text-slate-700"} 
+          hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-900 dark:text-slate-400 rounded-lg
+          dark:hover:text-slate-300 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600`}
+              onClick={() => toggleAccordion("users")}
             >
               <svg
                 className="flex-shrink-0 w-4 h-4"
@@ -89,7 +105,8 @@ function Sidebar({ isOpen, menuRef}) {
                 <path d="m18 15-6-6-6 6"></path>
               </svg>
               <svg
-                className="hs-accordion-active:hidden ms-auto block w-4 h-4"
+                className={`ms-auto w-4 h-4 transition-transform duration-200 ease-in-out 
+            ${accordionState.users ? "" : "transform rotate-180"}`}
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
                 height="24"
@@ -100,154 +117,43 @@ function Sidebar({ isOpen, menuRef}) {
                 strokeLinecap="round"
                 strokeLinejoin="round"
               >
-                <path d="m6 9 6 6 6-6"></path>
+                <path d="m18 15-6-6-6 6"></path>
               </svg>
             </button>
 
             <div
-              id="users-accordion-child"
-              className="hs-accordion-content w-full overflow-hidden transition-[height] duration-300 hidden"
-              style={{ display: "block" }}
+              id="account-accordion-child"
+              className={`hs-accordion-content w-full overflow-hidden transition-max-height duration-200 ease-in-out ${
+                accordionState.users ? "max-h-screen" : "max-h-0"
+              }`}
+              style={{
+                display: accordionState.users ? "block" : "hidden",
+              }}
             >
-              <ul
-                className="hs-accordion-group ps-3 pt-2"
-                data-hs-accordion-always-open=""
-              >
-                <li className="hs-accordion" id="users-accordion-sub-1">
-                  <button
-                    type="button"
-                    className="hs-accordion-toggle w-full text-start flex items-center gap-x-3.5 py-2 px-2.5 hs-accordion-active:text-blue-600 hs-accordion-active:hover:bg-transparent text-sm text-slate-700 rounded-lg hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-900 dark:text-slate-400 dark:hover:text-slate-300 dark:hs-accordion-active:text-white dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
+              <ul className="pt-2 ps-2">
+                <li>
+                  <a
+                    className="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-slate-700 rounded-lg hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-900 dark:text-slate-400 dark:hover:text-slate-300 dark:hs-accordion-active:text-white dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
+                    href="#"
                   >
-                    Sub Menu 1
-                    <svg
-                      className="hs-accordion-active:block ms-auto hidden w-4 h-4"
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <path d="m18 15-6-6-6 6"></path>
-                    </svg>
-                    <svg
-                      className="hs-accordion-active:hidden ms-auto block w-4 h-4"
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <path d="m6 9 6 6 6-6"></path>
-                    </svg>
-                  </button>
-
-                  <div
-                    id="users-accordion-sub-1-child"
-                    className="hs-accordion-content w-full overflow-hidden transition-[height] duration-300 hidden"
-                  >
-                    <ul className="pt-2 ps-2">
-                      <li>
-                        <a
-                          className="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-slate-700 rounded-lg hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-900 dark:text-slate-400 dark:hover:text-slate-300 dark:hs-accordion-active:text-white dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
-                          href="#"
-                        >
-                          Link 1
-                        </a>
-                      </li>
-                      <li>
-                        <a
-                          className="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-slate-700 rounded-lg hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-900 dark:text-slate-400 dark:hover:text-slate-300 dark:hs-accordion-active:text-white dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
-                          href="#"
-                        >
-                          Link 2
-                        </a>
-                      </li>
-                      <li>
-                        <a
-                          className="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-slate-700 rounded-lg hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-900 dark:text-slate-400 dark:hover:text-slate-300 dark:hs-accordion-active:text-white dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
-                          href="#"
-                        >
-                          Link 3
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
+                    Link 1
+                  </a>
                 </li>
-                <li className="hs-accordion" id="users-accordion-sub-2">
-                  <button
-                    type="button"
-                    className="hs-accordion-toggle w-full text-start flex items-center gap-x-3.5 py-2 px-2.5 hs-accordion-active:text-blue-600 hs-accordion-active:hover:bg-transparent text-sm text-slate-700 rounded-lg hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-900 dark:text-slate-400 dark:hover:text-slate-300 dark:hs-accordion-active:text-white dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
+                <li>
+                  <a
+                    className="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-slate-700 rounded-lg hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-900 dark:text-slate-400 dark:hover:text-slate-300 dark:hs-accordion-active:text-white dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
+                    href="#"
                   >
-                    Sub Menu 2
-                    <svg
-                      className="hs-accordion-active:block ms-auto hidden w-4 h-4"
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <path d="m18 15-6-6-6 6"></path>
-                    </svg>
-                    <svg
-                      className="hs-accordion-active:hidden ms-auto block w-4 h-4"
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <path d="m6 9 6 6 6-6"></path>
-                    </svg>
-                  </button>
-
-                  <div
-                    id="users-accordion-sub-2-child"
-                    className="hs-accordion-content w-full overflow-hidden transition-[height] duration-300 hidden ps-2"
+                    Link 2
+                  </a>
+                </li>
+                <li>
+                  <a
+                    className="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-slate-700 rounded-lg hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-900 dark:text-slate-400 dark:hover:text-slate-300 dark:hs-accordion-active:text-white dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
+                    href="#"
                   >
-                    <ul className="pt-2 ps-2">
-                      <li>
-                        <a
-                          className="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-slate-700 rounded-lg hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-900 dark:text-slate-400 dark:hover:text-slate-300 dark:hs-accordion-active:text-white dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
-                          href="#"
-                        >
-                          Link 1
-                        </a>
-                      </li>
-                      <li>
-                        <a
-                          className="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-slate-700 rounded-lg hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-900 dark:text-slate-400 dark:hover:text-slate-300 dark:hs-accordion-active:text-white dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
-                          href="#"
-                        >
-                          Link 2
-                        </a>
-                      </li>
-                      <li>
-                        <a
-                          className="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-slate-700 rounded-lg hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-900 dark:text-slate-400 dark:hover:text-slate-300 dark:hs-accordion-active:text-white dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
-                          href="#"
-                        >
-                          Link 3
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
+                    Link 3
+                  </a>
                 </li>
               </ul>
             </div>
@@ -256,7 +162,11 @@ function Sidebar({ isOpen, menuRef}) {
           <li className="hs-accordion active" id="account-accordion">
             <button
               type="button"
-              className="hs-accordion-toggle w-full text-start flex items-center gap-x-3.5 py-2 px-2.5 hs-accordion-active:text-blue-600 hs-accordion-active:hover:bg-transparent text-sm text-slate-700 rounded-lg hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-900 dark:text-slate-400 dark:hover:text-slate-300 dark:hs-accordion-active:text-white dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
+              className={`hs-accordion-toggle text-sm w-full text-start flex items-center gap-x-3.5 py-2 px-2.5 
+          ${accordionState.account ? "text-blue-600" : "text-slate-700"} 
+          hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-900 dark:text-slate-400 rounded-lg
+          dark:hover:text-slate-300 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600`}
+              onClick={() => toggleAccordion("account")}
             >
               <svg
                 className="flex-shrink-0 mt-0.5 w-4 h-4"
@@ -298,7 +208,8 @@ function Sidebar({ isOpen, menuRef}) {
                 <path d="m18 15-6-6-6 6"></path>
               </svg>
               <svg
-                className="hs-accordion-active:hidden ms-auto block w-4 h-4"
+                className={`ms-auto w-4 h-4 transition-transform duration-200 ease-in-out 
+            ${accordionState.account ? "" : "transform rotate-180"}`}
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
                 height="24"
@@ -309,14 +220,18 @@ function Sidebar({ isOpen, menuRef}) {
                 strokeLinecap="round"
                 strokeLinejoin="round"
               >
-                <path d="m6 9 6 6 6-6"></path>
+                <path d="m18 15-6-6-6 6"></path>
               </svg>
             </button>
 
             <div
               id="account-accordion-child"
-              className="hs-accordion-content w-full overflow-hidden transition-[height] duration-300 hidden"
-              style={{ display: "block" }}
+              className={`hs-accordion-content w-full overflow-hidden transition-max-height duration-200 ease-in-out ${
+                accordionState.account ? "max-h-screen" : "max-h-0"
+              }`}
+              style={{
+                display: accordionState.account ? "block" : "hidden",
+              }}
             >
               <ul className="pt-2 ps-2">
                 <li>
@@ -350,7 +265,11 @@ function Sidebar({ isOpen, menuRef}) {
           <li className="hs-accordion active" id="projects-accordion">
             <button
               type="button"
-              className="hs-accordion-toggle w-full text-start flex items-center gap-x-3.5 py-2 px-2.5 hs-accordion-active:text-blue-600 hs-accordion-active:hover:bg-transparent text-sm text-slate-700 rounded-lg hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-900 dark:text-slate-400 dark:hover:text-slate-300 dark:hs-accordion-active:text-white dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
+              className={`hs-accordion-toggle text-sm w-full text-start flex items-center gap-x-3.5 py-2 px-2.5 
+          ${accordionState.projects ? "text-blue-600" : "text-slate-700"} 
+          hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-900 dark:text-slate-400 rounded-lg
+          dark:hover:text-slate-300 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600`}
+              onClick={() => toggleAccordion("projects")}
             >
               <svg
                 className="flex-shrink-0 w-4 h-4"
@@ -383,7 +302,8 @@ function Sidebar({ isOpen, menuRef}) {
                 <path d="m18 15-6-6-6 6"></path>
               </svg>
               <svg
-                className="hs-accordion-active:hidden ms-auto block w-4 h-4"
+                className={`ms-auto w-4 h-4 transition-transform duration-200 ease-in-out 
+            ${accordionState.projects ? "" : "transform rotate-180"}`}
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
                 height="24"
@@ -394,14 +314,18 @@ function Sidebar({ isOpen, menuRef}) {
                 strokeLinecap="round"
                 strokeLinejoin="round"
               >
-                <path d="m6 9 6 6 6-6"></path>
+                <path d="m18 15-6-6-6 6"></path>
               </svg>
             </button>
 
             <div
               id="projects-accordion-child"
-              className="hs-accordion-content w-full overflow-hidden transition-[height] duration-300 hidden"
-              style={{ display: "block" }}
+              className={`hs-accordion-content w-full overflow-hidden transition-max-height duration-200 ease-in-out ${
+                accordionState.projects ? "max-h-screen" : "max-h-0"
+              }`}
+              style={{
+                display: accordionState.projects ? "block" : "hidden",
+              }}
             >
               <ul className="pt-2 ps-2">
                 <li>

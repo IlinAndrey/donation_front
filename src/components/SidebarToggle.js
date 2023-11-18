@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import Sidebar from "./Sidebar";
+import React from "react";
 
 function SidebarToggle({ sidebarOpen, toggleSidebarOpen}) {
   function handleClickSidebarOpen() {

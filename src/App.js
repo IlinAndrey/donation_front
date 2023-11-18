@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef, useLayoutEffect } from "react";
+import { useState, useRef, useLayoutEffect } from "react";
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
 import SidebarToggle from "./components/SidebarToggle";
@@ -44,7 +44,7 @@ function App() {
   return (
     <>
       <div className={`${darkMode && "dark"}`}>
-        <div className="bg-gray-50 dark:bg-slate-900">
+        <div className="bg-gray-50 dark:bg-gray-900">
           <Header toggleDarkMode={toggleDarkMode} darkMode={darkMode} />
           <SidebarToggle
             toggleSidebarOpen={toggleSidebarOpen}

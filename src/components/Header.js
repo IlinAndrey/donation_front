@@ -1,4 +1,6 @@
 import React from "react";
+import WbSunnyIcon from '@mui/icons-material/WbSunny';
+import DarkModeIcon from '@mui/icons-material/DarkMode';
 
 function Header({ toggleDarkMode, darkMode }) {
 
@@ -69,7 +71,7 @@ function Header({ toggleDarkMode, darkMode }) {
                   type="text"
                   id="icon"
                   name="icon"
-                  className="py-2 px-4 ps-11 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600"
+                  className="outline-none border py-2 px-4 ps-11 block w-full border-gray-300 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600"
                   placeholder="Search"
                 />
               </div>
@@ -99,10 +101,9 @@ function Header({ toggleDarkMode, darkMode }) {
               <button
                 onClick={toggleDarkMode}
                 type="button"
-                className="pointer-events-auto rounded-md bg-indigo-600 px-3 py-2 text-[0.8125rem] font-semibold leading-5 text-white hover:bg-indigo-500 dark:text-white dark:hover:bg-gray-700 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
-                data-hs-offcanvas="#hs-offcanvas-right"
+                className="w-10 h-10 rounded-full pointer-events-auto bg-gray-100 px-2 py-2 text-1xl leading-5 text-gray-400 hover:text-gray-600 dark:text-gray-200 dark:bg-gray-700 dark:hover:text-white dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
               >
-                {darkMode ? "light" : "dark"}
+                {darkMode ? <WbSunnyIcon style={{width: '0.8em', height: '0.8em'}}/> : <DarkModeIcon style={{width: '0.8em', height: '0.8em'}}/>}
               </button>
 
               <div className="hs-dropdown relative inline-flex [--placement:bottom-right]">
