@@ -4,6 +4,7 @@ import Sidebar from "./components/Sidebar";
 import SidebarToggle from "./components/SidebarToggle";
 import { useClickOutside } from "./functions/useClickOutside";
 import SomePage from "./pages/SomePage";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -45,17 +46,31 @@ function App() {
     <>
       <div className={`${darkMode && "dark"}`}>
         <div className="bg-gray-50 dark:bg-gray-900">
-          <Header toggleDarkMode={toggleDarkMode} darkMode={darkMode} />
-          <SidebarToggle
-            toggleSidebarOpen={toggleSidebarOpen}
-            sidebarOpen={sidebarOpen}
-          />
-          <Sidebar
-            isOpen={sidebarOpen}
-            menuRef={menuRef}
-            isSmallScreen={isSmallScreen}
-          />
-          <SomePage toggleDarkMode={toggleDarkMode} darkMode={darkMode} />
+          <BrowserRouter>
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  <>
+                    <Header
+                      toggleDarkMode={toggleDarkMode}
+                      darkMode={darkMode}
+                    />
+                    <SidebarToggle
+                      toggleSidebarOpen={toggleSidebarOpen}
+                      sidebarOpen={sidebarOpen}
+                    />
+                    <Sidebar
+                      isOpen={sidebarOpen}
+                      menuRef={menuRef}
+                      isSmallScreen={isSmallScreen}
+                    />
+                    <SomePage />
+                  </>
+                }
+              />
+             </Routes>
+          </BrowserRouter>
         </div>
       </div>
     </>

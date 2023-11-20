@@ -130,9 +130,7 @@ function Header({ toggleDarkMode, darkMode }) {
                 </button>
 
                 {isMenuOpen && (
-                  <div
-                    className="absolute right-0 mt-11 duration min-w-[15rem] bg-white shadow-md rounded-lg p-2 dark:bg-gray-800 dark:border dark:border-gray-700"
-                  >
+                  <div className="absolute right-0 mt-11 duration min-w-[15rem] bg-white shadow-md rounded-lg p-2 dark:bg-gray-800 dark:border dark:border-gray-700">
                     <div className="py-3 px-5 -m-2 bg-gray-100 rounded-t-lg dark:bg-gray-700">
                       <p className="text-sm text-gray-500 dark:text-gray-400">
                         Signed in as
