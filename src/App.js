@@ -5,7 +5,7 @@ import SidebarToggle from "./components/SidebarToggle";
 import { useClickOutside } from "./functions/useClickOutside";
 import SomePage from "./pages/SomePage";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-
+import GithubCallbackComponent from "./components/GithubCallbackComponent";
 function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 1024);
@@ -69,7 +69,8 @@ function App() {
                   </>
                 }
               />
-             </Routes>
+              <Route path="/dj-rest-auth/github/callback" exact element={<GithubCallbackComponent />} />
+            </Routes>
           </BrowserRouter>
         </div>
       </div>
