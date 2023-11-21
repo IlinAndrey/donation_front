@@ -1,21 +1,24 @@
 import React, { useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const GithubCallbackComponent = () => {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const code = searchParams.get("code");
+  const navigate = useNavigate();
 
   useEffect(() =>{
     console.log("bub")
     handleLoginGit();
   })
 
+  // navigate(-1);
+
   const handleLoginGit = () => {
     axios
       .post("http://127.0.0.1:8000/dj-rest-auth/github/", {
-        code: code,
+        "code": code,
       })
       .then((response) => {
         console.log(response);
