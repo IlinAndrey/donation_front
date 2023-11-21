@@ -19,9 +19,11 @@ const GithubCallbackComponent = () => {
       })
       .then((response) => {
         console.log(response);
+        console.log("Da")
       })
       .catch((error) => {
         console.error("Ошибка выхода:", error);
+        console.log("Net")
       });
   };
 
