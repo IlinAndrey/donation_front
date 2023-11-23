@@ -6,7 +6,7 @@ import { useClickOutside } from "./functions/useClickOutside";
 import SomePage from "./pages/SomePage";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import GithubCallbackComponent from "./components/GithubCallbackComponent";
-// import Cookies from 'js-cookie';
+import сookies from 'js-cookie';
 
 
 function App() {
@@ -44,6 +44,8 @@ function App() {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
+
+  сookies.get('jwt-auth')
 
   return (
     <>
