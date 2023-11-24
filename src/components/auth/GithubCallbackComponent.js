@@ -22,22 +22,22 @@ const GithubCallbackComponent = () => {
         {
           code: code,
         },
-        // {
-        //   credentials: "include",
-        // },
-        // {
-        //   withCredentials: true,
-        //   headers: {
-        //     "Content-Type": "application/json",
-        //     "Access-Control-Allow-Headers": "*",
-        //     "Access-Control-Allow-Credentials": "true",
-        //   },
-        // }
+        {
+          credentials: "include",
+        },
+        {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Headers": "*",
+            "Access-Control-Allow-Credentials": "true",
+          },
+        }
       )
       .then((response) => {
         console.log(response);
         console.log("Da");
-        setToken("Bearer "+ response.data.access);
+        setToken(response.data.access);
         
       })
       .catch((error) => {
@@ -46,7 +46,7 @@ const GithubCallbackComponent = () => {
       });
   };
 
-  Сookies.set('jwt-auth', token, { expires: 7 });
+  Сookies.set('jwt-auth', token, { expires: 7, httpOnly: true });
 
   // navigate(-1);
 

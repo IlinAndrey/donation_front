@@ -5,7 +5,7 @@ import SidebarToggle from "./components/SidebarToggle";
 import { useClickOutside } from "./functions/useClickOutside";
 import SomePage from "./pages/SomePage";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import GithubCallbackComponent from "./components/GithubCallbackComponent";
+import GithubCallbackComponent from "./components/auth/GithubCallbackComponent";
 import сookies from 'js-cookie';
 
 
