@@ -1,13 +1,25 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import WbSunnyIcon from "@mui/icons-material/WbSunny";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
+import axios from "axios";
+import GithubCallbackComponent from "../auth/GithubCallbackComponent";
 
 function Header({ toggleDarkMode, darkMode }) {
   const [isMenuOpen, setMenuOpen] = useState(false);
+  const [name, setName] = useState("");
+  const [headerData, setHeaderData] = useState(null);
+
+  const handlePostDataChange = (newPostData) => {
+    setHeaderData(newPostData);
+  };
 
   const toggleMenu = () => {
     setMenuOpen(!isMenuOpen);
   };
+
+  // const handleButtonClick = () => {
+  //   window.location.href = 'https://github.com/login/oauth/authorize?client_id=Iv1.9e1ed9594dd98e77&redirect_uri=http://127.0.0.1:3000/dj-rest-auth/github/callback';
+  // };
 
   return (
     <div className={`${darkMode && "dark"}`}>
@@ -82,6 +94,15 @@ function Header({ toggleDarkMode, darkMode }) {
               </div>
             </div>
 
+            {/* <button onClick={handleButtonClick}>Login with GitHub</button> */}
+            <GithubCallbackComponent onPostDataChange={handlePostDataChange} />
+            {headerData && (
+              <div>
+                <h2>Данные из Component:</h2>
+                <pre>{JSON.stringify(headerData, null, 2)}</pre>
+              </div>
+            )}
+
             <div className="flex flex-row items-center justify-end gap-2">
               <button
                 type="button"
@@ -136,7 +157,7 @@ function Header({ toggleDarkMode, darkMode }) {
                         Signed in as
                       </p>
                       <p className="text-sm font-medium text-gray-800 dark:text-gray-300">
-                        james@site.com
+                        {name.username}
                       </p>
                     </div>
                     <div className="mt-2 py-2 first:pt-0 last:pb-0">

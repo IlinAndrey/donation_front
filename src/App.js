@@ -1,18 +1,19 @@
-import { useState, useRef, useLayoutEffect } from "react";
+import { useEffect, useState, useRef, useLayoutEffect } from "react";
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
 import SidebarToggle from "./components/SidebarToggle";
 import { useClickOutside } from "./functions/useClickOutside";
 import SomePage from "./pages/SomePage";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import GithubCallbackComponent from "./components/auth/GithubCallbackComponent";
-import сookies from 'js-cookie';
-
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import GithubCallbackComponent from "./auth/GithubCallbackComponent";
+import сookies from "js-cookie";
+import axios from "axios";
 
 function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 1024);
   const [darkMode, setDarkMode] = useState(false);
+  // const [token, setToken] = useState("");
 
   const toggleDarkMode = () => {
     setDarkMode(!darkMode);
@@ -45,7 +46,7 @@ function App() {
     };
   }, []);
 
-  сookies.get('jwt-auth')
+  сookies.get("jwt-auth");
 
   return (
     <>
@@ -74,7 +75,16 @@ function App() {
                   </>
                 }
               />
-              <Route path="/dj-rest-auth/github/callback" exact element={<GithubCallbackComponent />} />
+              <Route
+                path="/dj-rest-auth/github/callback"
+                exact
+                element={
+                  <>
+                    <GithubCallbackComponent />
+                    {/* <Navigate replace to="/" /> */}
+                  </>
+                }
+              />
             </Routes>
           </BrowserRouter>
         </div>
