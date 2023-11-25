@@ -1,10 +1,11 @@
-import React, { useEffect, useState, onChange } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
-import Сookies from "js-cookie";
+import Cookies from "js-cookie";
 
 const GithubCallbackComponent = () => {
-  const [token, setToken] = useState(localStorage.getItem('token') || '');
+  const [token, setToken] = useState("");
+  const [user, setUser] = useState("");
   const [postData, setPostData] = useState(null);
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
@@ -12,64 +13,72 @@ const GithubCallbackComponent = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    handleLoginGit();
-  }, []);
-
-  useEffect(() => {
-    const storedToken = localStorage.getItem("token");
-    if (storedToken) {
-      setToken(storedToken);
-    }
-  }, [postData]);
-
-  const handleLoginGit = () => {
-    axios
-      .post(
-        `http://127.0.0.1:8000/dj-rest-auth/github/?code=${code}`,
-        {
-          code: code,
-        },
-        {
-          credentials: "include",
-        },
-        {
-          withCredentials: true,
-          headers: {
-            "Content-Type": "application/json",
-            "Access-Control-Allow-Headers": "*",
-            "Access-Control-Allow-Credentials": "true",
-            Authorization: `Bearer ${token}`,
+    const handleLoginGit = async () => {
+      try {
+        const response = await axios.post(
+          `http://127.0.0.1:8000/dj-rest-auth/github/`,
+          {
+            code: code,
           },
-        }
-      )
-      .then((response) => {
+          {
+            credentials: "include",
+          },
+          {
+            withCredentials: true,
+            headers: {
+              "Content-Type": "application/json",
+              "Access-Control-Allow-Headers": "*",
+              "Access-Control-Allow-Credentials": "true",
+            },
+          }
+        );
         console.log(response);
-        console.log("Da");
-        const newToken = response.data.access;
-        setToken(newToken);
-        localStorage.setItem("token", newToken);
+        // const newToken = response.data.access;
+        // setToken(response.data.access);
+
+        document.cookie = `jwt-auth=${response.data.access}; expires=${new Date(
+          Date.now() + 7 * 24 * 60 * 60 * 1000
+        ).toUTCString()}; path=/`;
+
+        // localStorage.setItem("token", newToken);
         setPostData(response.data);
-      })
-      .catch((error) => {
+      } catch (error) {
         console.error("Ошибка выхода:", error);
         console.log("Net");
-      });
+      }
+    };
+
+    if (code) {
+      handleLoginGit();
+    }
+  }, [code]);
+
+  const handleButtonClick = () => {
+    window.location.href =
+      "https://github.com/login/oauth/authorize?client_id=Iv1.9e1ed9594dd98e77&redirect_uri=http://127.0.0.1:3000/dj-rest-auth/github/callback";
   };
 
-  // Сookies.set("jwt-auth", token, { expires: 7 });
+  const fetchUser = async () => {
+    try {
+      const response = await axios.get(
+        "http://127.0.0.1:8000/dj-rest-auth/user/"
+      );
+      setUser(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-  // const handleLogout = () => {
-  //   setToken('');
-  //   localStorage.removeItem('token');
-  // };
+  useEffect(() => {
+    fetchUser();
+  }, []);
+
+  // Cookies.set("jwt-auth", token, { expires: 7 });
 
   return (
     <div>
-      {/* <h2>Github Callback Component</h2>
-      <p>GitHub code: {code}</p>
-      <p>Token: {token}</p> */}
-      <a href="https://github.com/login/oauth/authorize?client_id=Iv1.9e1ed9594dd98e77&redirect_uri=http://127.0.0.1:3000/dj-rest-auth/github/callback">
-        <button>Login with GitHub</button>
+      <a>
+        <button onClick={handleButtonClick}>Login with GitHub</button>
       </a>
       {postData && (
         <div>
