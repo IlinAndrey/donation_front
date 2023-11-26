@@ -4,9 +4,8 @@ import DarkModeIcon from "@mui/icons-material/DarkMode";
 import axios from "axios";
 import GithubCallbackComponent from "../auth/GithubCallbackComponent";
 
-function Header({ toggleDarkMode, darkMode }) {
+function Header({ toggleDarkMode, darkMode, isAuthenticated, user }) {
   const [isMenuOpen, setMenuOpen] = useState(false);
-  const [name, setName] = useState("");
   const [headerData, setHeaderData] = useState(null);
 
   const handlePostDataChange = (newPostData) => {
@@ -16,10 +15,6 @@ function Header({ toggleDarkMode, darkMode }) {
   const toggleMenu = () => {
     setMenuOpen(!isMenuOpen);
   };
-
-  // const handleButtonClick = () => {
-  //   window.location.href = 'https://github.com/login/oauth/authorize?client_id=Iv1.9e1ed9594dd98e77&redirect_uri=http://127.0.0.1:3000/dj-rest-auth/github/callback';
-  // };
 
   return (
     <div className={`${darkMode && "dark"}`}>
@@ -96,6 +91,7 @@ function Header({ toggleDarkMode, darkMode }) {
 
             {/* <button onClick={handleButtonClick}>Login with GitHub</button> */}
             <GithubCallbackComponent onPostDataChange={handlePostDataChange} />
+            {/* <button onClick={handleUser}>Call User</button> */}
             {headerData && (
               <div>
                 <h2>Данные из Component:</h2>
@@ -153,12 +149,20 @@ function Header({ toggleDarkMode, darkMode }) {
                 {isMenuOpen && (
                   <div className="absolute right-0 mt-11 duration min-w-[15rem] bg-white shadow-md rounded-lg p-2 dark:bg-gray-800 dark:border dark:border-gray-700">
                     <div className="py-3 px-5 -m-2 bg-gray-100 rounded-t-lg dark:bg-gray-700">
-                      <p className="text-sm text-gray-500 dark:text-gray-400">
-                        Signed in as
-                      </p>
-                      <p className="text-sm font-medium text-gray-800 dark:text-gray-300">
-                        {name.username}
-                      </p>
+                      {isAuthenticated ? (
+                        <div>
+                          <p className="text-sm text-gray-500 dark:text-gray-400">
+                            Signed in as
+                          </p>
+                          <p className="text-sm font-medium text-gray-800 dark:text-gray-300">
+                            {user.username}
+                          </p>
+                        </div>
+                      ) : (
+                        <p className="text-sm text-gray-500 dark:text-gray-400">
+                          Not signed
+                        </p>
+                      )}
                     </div>
                     <div className="mt-2 py-2 first:pt-0 last:pb-0">
                       <a

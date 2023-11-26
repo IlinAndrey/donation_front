@@ -33,22 +33,21 @@ const GithubCallbackComponent = () => {
           }
         );
         console.log(response);
-        // const newToken = response.data.access;
-        // setToken(response.data.access);
-
         document.cookie = `jwt-auth=${response.data.access}; expires=${new Date(
           Date.now() + 7 * 24 * 60 * 60 * 1000
         ).toUTCString()}; path=/`;
-
-        // localStorage.setItem("token", newToken);
         setPostData(response.data);
+        window.location.href = response.data.next || '/';
       } catch (error) {
         console.error("Ошибка выхода:", error);
         console.log("Net");
       }
     };
 
-    if (code) {
+    if (
+      location.pathname === "/dj-rest-auth/github/callback" &&
+      code !== null
+    ) {
       handleLoginGit();
     }
   }, [code]);
@@ -57,23 +56,6 @@ const GithubCallbackComponent = () => {
     window.location.href =
       "https://github.com/login/oauth/authorize?client_id=Iv1.9e1ed9594dd98e77&redirect_uri=http://127.0.0.1:3000/dj-rest-auth/github/callback";
   };
-
-  const fetchUser = async () => {
-    try {
-      const response = await axios.get(
-        "http://127.0.0.1:8000/dj-rest-auth/user/"
-      );
-      setUser(response.data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  useEffect(() => {
-    fetchUser();
-  }, []);
-
-  // Cookies.set("jwt-auth", token, { expires: 7 });
 
   return (
     <div>
