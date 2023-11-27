@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
+import GitHubIcon from '@mui/icons-material/GitHub';
 import Cookies from "js-cookie";
 
 const GithubCallbackComponent = () => {
@@ -59,9 +60,7 @@ const GithubCallbackComponent = () => {
 
   return (
     <div>
-      <a>
-        <button onClick={handleButtonClick}>Login with GitHub</button>
-      </a>
+        <button onClick={handleButtonClick} className="text-gray-800 dark:text-gray-200 "><GitHubIcon /></button>
       {postData && (
         <div>
           <h2>Данные после POST-запроса:</h2>

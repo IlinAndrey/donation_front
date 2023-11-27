@@ -13,7 +13,10 @@ import BlankPage from "./pages/BlankPage";
 function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 1024);
-  const [darkMode, setDarkMode] = useState(false);
+  const [darkMode, setDarkMode] = useState(() => {
+    const storedDarkMode = localStorage.getItem('darkMode');
+    return storedDarkMode ? storedDarkMode === 'true' : false;
+  });
   const [user, setUser] = useState(null);
   const [authenticationStatus, setAuthenticationStatus] = useState(true);
 
@@ -30,18 +33,20 @@ function App() {
         },
       })
       .then((response) => {
-        // console.log(response.data)
         setUser(response.data);
       })
       .catch((error) => {
         if (error.response && error.response.status === 401) {
-          // Если получена 401 ошибка, пользователь не авторизован
           setAuthenticationStatus(false);
         } else {
           console.error("Axios error:", error);
         }
       });
   };
+
+  useEffect(() => {
+    localStorage.setItem('darkMode', darkMode);
+  }, [darkMode]);
 
   const toggleDarkMode = () => {
     setDarkMode(!darkMode);
@@ -92,18 +97,20 @@ function App() {
                       isAuthenticated={authenticationStatus}
                       user={user}
                     />
-                    <SidebarToggle
-                      toggleSidebarOpen={toggleSidebarOpen}
-                      sidebarOpen={sidebarOpen}
-                    />
-                    <Sidebar
-                      isOpen={sidebarOpen}
-                      menuRef={menuRef}
-                      isSmallScreen={isSmallScreen}
-                    />
-                    {authenticationStatus ?(
-                    <SomePage />
-                    ):(
+                    {authenticationStatus ? (
+                      <>
+                        <SidebarToggle
+                          toggleSidebarOpen={toggleSidebarOpen}
+                          sidebarOpen={sidebarOpen}
+                        />
+                        <Sidebar
+                          isOpen={sidebarOpen}
+                          menuRef={menuRef}
+                          isSmallScreen={isSmallScreen}
+                        />
+                        <SomePage />
+                      </>
+                    ) : (
                       <BlankPage />
                     )}
                   </>

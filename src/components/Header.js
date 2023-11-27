@@ -3,14 +3,23 @@ import WbSunnyIcon from "@mui/icons-material/WbSunny";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import axios from "axios";
 import GithubCallbackComponent from "../auth/GithubCallbackComponent";
+import LogoutIcon from "@mui/icons-material/Logout";
+import SignInModalTab from "./SignInModalTab";
+import LoginIcon from '@mui/icons-material/Login';
 
 function Header({ toggleDarkMode, darkMode, isAuthenticated, user }) {
   const [isMenuOpen, setMenuOpen] = useState(false);
-  const [headerData, setHeaderData] = useState(null);
+  // const [headerData, setHeaderData] = useState(null);
 
-  const handlePostDataChange = (newPostData) => {
-    setHeaderData(newPostData);
+  const [modalSignIn, setModalSignIn] = useState(false);
+
+  const handleModalOpen = () => {
+    setModalSignIn(!modalSignIn);
   };
+
+  // const handlePostDataChange = (newPostData) => {
+  //   setHeaderData(newPostData);
+  // };
 
   const toggleMenu = () => {
     setMenuOpen(!isMenuOpen);
@@ -23,7 +32,7 @@ function Header({ toggleDarkMode, darkMode, isAuthenticated, user }) {
           className="flex basis-full items-center w-full mx-auto px-4 sm:px-6 md:px-8"
           aria-label="Global"
         >
-          <div className="me-5 lg:me-0 lg:hidden">
+          <div className="me-5 lg:left-10 lg:absolute">
             <a
               className="flex-none text-xl font-semibold dark:text-white"
               href="#"
@@ -89,15 +98,7 @@ function Header({ toggleDarkMode, darkMode, isAuthenticated, user }) {
               </div>
             </div>
 
-            {/* <button onClick={handleButtonClick}>Login with GitHub</button> */}
-            <GithubCallbackComponent onPostDataChange={handlePostDataChange} />
-            {/* <button onClick={handleUser}>Call User</button> */}
-            {headerData && (
-              <div>
-                <h2>Данные из Component:</h2>
-                <pre>{JSON.stringify(headerData, null, 2)}</pre>
-              </div>
-            )}
+            {/* <GithubCallbackComponent /> */}
 
             <div className="flex flex-row items-center justify-end gap-2">
               <button
@@ -147,21 +148,56 @@ function Header({ toggleDarkMode, darkMode, isAuthenticated, user }) {
                 </button>
 
                 {isMenuOpen && (
-                  <div className="absolute right-0 mt-11 duration min-w-[15rem] bg-white shadow-md rounded-lg p-2 dark:bg-gray-800 dark:border dark:border-gray-700">
+                  <div className="absolute right-0 mt-11 duration min-w-[15rem] max-w-[15rem] bg-white shadow-md rounded-lg p-2 dark:bg-gray-800 dark:border dark:border-gray-700">
                     <div className="py-3 px-5 -m-2 bg-gray-100 rounded-t-lg dark:bg-gray-700">
                       {isAuthenticated ? (
                         <div>
                           <p className="text-sm text-gray-500 dark:text-gray-400">
                             Signed in as
                           </p>
-                          <p className="text-sm font-medium text-gray-800 dark:text-gray-300">
-                            {user.username}
-                          </p>
+                          <div className="flex">
+                            <p className="text-sm font-medium text-gray-800 dark:text-gray-300">
+                              {user.username}
+                            </p>
+                            <button
+                              onClick={() => {
+                                document.cookie =
+                                  "jwt-auth=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                                  window.location.reload();
+                              }}
+                              className="flex items-center text-sm text-red-500 dark:text-red-400 right-0 mr-5 absolute"
+                            >
+                              Exit
+                              <LogoutIcon
+                                style={{
+                                  marginLeft: "5px",
+                                  width: "0.6em",
+                                  height: "0.6em",
+                                }}
+                              />
+                            </button>
+                          </div>
                         </div>
                       ) : (
-                        <p className="text-sm text-gray-500 dark:text-gray-400">
-                          Not signed
-                        </p>
+                        <div className="">
+                          <p className="text-sm text-gray-500 dark:text-gray-400">
+                            Not signed
+                          </p>
+                          <button
+                            onClick={handleModalOpen}
+                            className="flex items-center text-sm text-blue-500 dark:text-blue-400 right-0 mr-5"
+                          >
+                            Sign In
+                            <LoginIcon
+                              style={{
+                                marginLeft: "5px",
+                                width: "0.6em",
+                                height: "0.6em",
+                              }}
+                            />
+                          </button>
+                          {modalSignIn && <SignInModalTab />}
+                        </div>
                       )}
                     </div>
                     <div className="mt-2 py-2 first:pt-0 last:pb-0">
