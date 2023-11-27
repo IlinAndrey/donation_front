@@ -181,7 +181,7 @@ function Transactions() {
       </div>
 
       <div className="flex flex-col mt-6">
-        <div className="overflow-x-auto rounded-lg">
+        <div className="overflow-x-auto rounded-lg no-scrollbar">
           <div className="inline-block min-w-full align-middle">
             <div className="overflow-hidden shadow sm:rounded-lg">
               <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-600">
