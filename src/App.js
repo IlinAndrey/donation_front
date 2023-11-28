@@ -9,6 +9,7 @@ import GithubCallbackComponent from "./auth/GithubCallbackComponent";
 import сookies from "js-cookie";
 import axios from "axios";
 import BlankPage from "./pages/BlankPage";
+import Footer from "./components/Footer";
 
 function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false);

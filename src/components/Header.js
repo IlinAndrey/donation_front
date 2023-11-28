@@ -34,11 +34,11 @@ function Header({ toggleDarkMode, darkMode, isAuthenticated, user }) {
         >
           <div className="me-5 lg:left-10 lg:absolute">
             <a
-              className="flex-none text-xl font-semibold dark:text-white"
+              className="flex-none text-xl font-bold dark:text-white"
               href="#"
               aria-label="Brand"
             >
-              Kekich
+              GameDay
             </a>
           </div>
 
@@ -66,6 +66,7 @@ function Header({ toggleDarkMode, darkMode, isAuthenticated, user }) {
               </button>
             </div>
 
+            {isAuthenticated ? (
             <div className="hidden sm:block">
               <label htmlFor="icon" className="sr-only">
                 Search
@@ -97,6 +98,9 @@ function Header({ toggleDarkMode, darkMode, isAuthenticated, user }) {
                 />
               </div>
             </div>
+            ):(
+              <span></span>
+            )}
 
             {/* <GithubCallbackComponent /> */}
 
