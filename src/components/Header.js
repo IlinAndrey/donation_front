@@ -1,29 +1,31 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import WbSunnyIcon from "@mui/icons-material/WbSunny";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import axios from "axios";
 import GithubCallbackComponent from "../auth/GithubCallbackComponent";
 import LogoutIcon from "@mui/icons-material/Logout";
 import SignInModalTab from "./SignInModalTab";
-import LoginIcon from '@mui/icons-material/Login';
+import LoginIcon from "@mui/icons-material/Login";
+import { useClickOutside } from "../functions/useClickOutside";
 
 function Header({ toggleDarkMode, darkMode, isAuthenticated, user }) {
   const [isMenuOpen, setMenuOpen] = useState(false);
-  // const [headerData, setHeaderData] = useState(null);
-
   const [modalSignIn, setModalSignIn] = useState(false);
 
   const handleModalOpen = () => {
     setModalSignIn(!modalSignIn);
   };
 
-  // const handlePostDataChange = (newPostData) => {
-  //   setHeaderData(newPostData);
-  // };
-
   const toggleMenu = () => {
     setMenuOpen(!isMenuOpen);
   };
+
+  const menuRef = useRef(null);
+  useClickOutside(menuRef, () => {
+    if (isMenuOpen) {
+      setMenuOpen(false);
+    }
+  });
 
   return (
     <div className={`${darkMode && "dark"}`}>
@@ -67,38 +69,38 @@ function Header({ toggleDarkMode, darkMode, isAuthenticated, user }) {
             </div>
 
             {isAuthenticated ? (
-            <div className="hidden sm:block">
-              <label htmlFor="icon" className="sr-only">
-                Search
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 start-0 flex items-center pointer-events-none z-20 ps-4">
-                  <svg
-                    className="flex-shrink-0 h-4 w-4 text-gray-400"
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <circle cx="11" cy="11" r="8" />
-                    <path d="m21 21-4.3-4.3" />
-                  </svg>
+              <div className="hidden sm:block">
+                <label htmlFor="icon" className="sr-only">
+                  Search
+                </label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 start-0 flex items-center pointer-events-none z-20 ps-4">
+                    <svg
+                      className="flex-shrink-0 h-4 w-4 text-gray-400"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <circle cx="11" cy="11" r="8" />
+                      <path d="m21 21-4.3-4.3" />
+                    </svg>
+                  </div>
+                  <input
+                    type="text"
+                    id="icon"
+                    name="icon"
+                    className="outline-none border py-2 px-4 ps-11 block w-full border-gray-300 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600"
+                    placeholder="Search"
+                  />
                 </div>
-                <input
-                  type="text"
-                  id="icon"
-                  name="icon"
-                  className="outline-none border py-2 px-4 ps-11 block w-full border-gray-300 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600"
-                  placeholder="Search"
-                />
               </div>
-            </div>
-            ):(
+            ) : (
               <span></span>
             )}
 
@@ -160,14 +162,20 @@ function Header({ toggleDarkMode, darkMode, isAuthenticated, user }) {
                             Signed in as
                           </p>
                           <div className="flex">
-                            <p className="text-sm font-medium text-gray-800 dark:text-gray-300">
-                              {user.username}
-                            </p>
+                            {user ? (
+                              <p className="text-sm font-medium text-gray-800 dark:text-gray-300">
+                                {user.username}
+                              </p>
+                            ) : (
+                              <p className="text-sm font-medium text-gray-800 dark:text-gray-300">
+                                Loading...
+                              </p>
+                            )}
                             <button
                               onClick={() => {
                                 document.cookie =
                                   "jwt-auth=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-                                  window.location.reload();
+                                window.location.reload();
                               }}
                               className="flex items-center text-sm text-red-500 dark:text-red-400 right-0 mr-5 absolute"
                             >
@@ -188,10 +196,12 @@ function Header({ toggleDarkMode, darkMode, isAuthenticated, user }) {
                             Not signed
                           </p>
                           <button
+                            data-modal-target="default-modal"
+                            data-modal-toggle="default-modal"
                             onClick={handleModalOpen}
                             className="flex items-center text-sm text-blue-500 dark:text-blue-400 right-0 mr-5"
                           >
-                            Sign In
+                            Sign In With...
                             <LoginIcon
                               style={{
                                 marginLeft: "5px",
@@ -200,7 +210,9 @@ function Header({ toggleDarkMode, darkMode, isAuthenticated, user }) {
                               }}
                             />
                           </button>
-                          {modalSignIn && <SignInModalTab />}
+                          {modalSignIn && <SignInModalTab modalSign={setModalSignIn}/>}
+                          {/* <SignInModalTab /> */}
+                          {/* <SignInModalTab modalSign={setModalSignIn}/> */}
                         </div>
                       )}
                     </div>

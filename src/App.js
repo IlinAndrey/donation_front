@@ -3,20 +3,23 @@ import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
 import SidebarToggle from "./components/SidebarToggle";
 import { useClickOutside } from "./functions/useClickOutside";
-import SomePage from "./pages/SomePage";
+import SomePage from "./pages/SendData";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import GithubCallbackComponent from "./auth/GithubCallbackComponent";
 import сookies from "js-cookie";
 import axios from "axios";
 import BlankPage from "./pages/BlankPage";
 import Footer from "./components/Footer";
+import Layout from "./pages/Layout";
+import Dashboard from "./pages/Dashboard";
+import SendData from "./pages/SendData";
 
 function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 1024);
   const [darkMode, setDarkMode] = useState(() => {
-    const storedDarkMode = localStorage.getItem('darkMode');
-    return storedDarkMode ? storedDarkMode === 'true' : false;
+    const storedDarkMode = localStorage.getItem("darkMode");
+    return storedDarkMode ? storedDarkMode === "true" : false;
   });
   const [user, setUser] = useState(null);
   const [authenticationStatus, setAuthenticationStatus] = useState(true);
@@ -46,7 +49,7 @@ function App() {
   };
 
   useEffect(() => {
-    localStorage.setItem('darkMode', darkMode);
+    localStorage.setItem("darkMode", darkMode);
   }, [darkMode]);
 
   const toggleDarkMode = () => {
@@ -84,52 +87,50 @@ function App() {
 
   return (
     <>
-      <div className={`${darkMode && "dark"}`}>
-        <div className="bg-gray-50 dark:bg-gray-900">
-          <BrowserRouter>
-            <Routes>
-              <Route
-                path="/"
-                element={
-                  <>
-                    <Header
-                      toggleDarkMode={toggleDarkMode}
-                      darkMode={darkMode}
-                      isAuthenticated={authenticationStatus}
-                      user={user}
-                    />
-                    {authenticationStatus ? (
-                      <>
-                        <SidebarToggle
-                          toggleSidebarOpen={toggleSidebarOpen}
-                          sidebarOpen={sidebarOpen}
-                        />
-                        <Sidebar
-                          isOpen={sidebarOpen}
-                          menuRef={menuRef}
-                          isSmallScreen={isSmallScreen}
-                        />
-                        <SomePage />
-                      </>
-                    ) : (
-                      <BlankPage />
-                    )}
-                  </>
-                }
-              />
-              <Route
-                path="/dj-rest-auth/github/callback"
-                exact
-                element={
-                  <>
-                    <GithubCallbackComponent />
-                    {/* <Navigate replace to="/" /> */}
-                  </>
-                }
-              />
-            </Routes>
-          </BrowserRouter>
-        </div>
+      <div>
+        <BrowserRouter>
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <Layout
+                  toggleDarkMode={toggleDarkMode}
+                  darkMode={darkMode}
+                  isAuthenticated={authenticationStatus}
+                  user={user}
+                  toggleSidebarOpen={toggleSidebarOpen}
+                  sidebarOpen={sidebarOpen}
+                  menuRef={menuRef}
+                  isSmallScreen={isSmallScreen}
+                >
+                  {authenticationStatus ? <SendData /> : <BlankPage />}
+                </Layout>
+              }
+            />
+            <Route
+              path="/dj-rest-auth/github/callback"
+              exact
+              element={<GithubCallbackComponent />}
+            />
+            <Route
+              path="/dashboard"
+              element={
+                <Layout
+                  toggleDarkMode={toggleDarkMode}
+                  darkMode={darkMode}
+                  isAuthenticated={authenticationStatus}
+                  user={user}
+                  toggleSidebarOpen={toggleSidebarOpen}
+                  sidebarOpen={sidebarOpen}
+                  menuRef={menuRef}
+                  isSmallScreen={isSmallScreen}
+                >
+                  {authenticationStatus ? <Dashboard /> : <BlankPage />}
+                </Layout>
+              }
+            />
+          </Routes>
+        </BrowserRouter>
       </div>
     </>
   );
