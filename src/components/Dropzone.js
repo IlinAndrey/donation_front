@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { useDrag, useDrop } from "react-dnd";
 
-const Dropzone = () => {
+const Dropzone = ({ onFileChange }) => {
   const [file, setFile] = useState(null);
 
   const onDrop = (item) => {
     setFile(item.file);
+    onFileChange(item.file);
   };
 
   const [{ canDrop, isOver }, drop] = useDrop({
@@ -27,8 +28,9 @@ const Dropzone = () => {
     },
   });
 
-    const handleFileChange = (e) => {
+  const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
+    onFileChange(selectedFile);
     setFile(selectedFile);
   };
 
@@ -38,7 +40,7 @@ const Dropzone = () => {
 
   return (
     <label
-      htmlFor="dropzone-file"
+      htmlFor="image_file"
       className={`flex flex-col items-center justify-center w-full h-64 border-2 ${
         canDrop && isOver
           ? "border-dashed border-green-500 bg-gray-100 dark:hover:bg-gray-600 dark:border-gray-500"
@@ -83,7 +85,7 @@ const Dropzone = () => {
         </p>
       </div>
       <input
-        id="dropzone-file"
+        id="image_file"
         type="file"
         className="hidden"
         onChange={handleFileChange}

@@ -1,6 +1,6 @@
 import React from "react";
 
-function SidebarToggle({ sidebarOpen, toggleSidebarOpen}) {
+function SidebarToggle({ sidebarOpen, toggleSidebarOpen }) {
   function handleClickSidebarOpen() {
     toggleSidebarOpen(sidebarOpen);
   }

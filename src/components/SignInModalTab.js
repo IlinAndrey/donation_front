@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 import { Dialog, Transition } from "@headlessui/react";
 import GithubCallbackComponent from "../auth/GithubCallbackComponent";
+import GoogleCallbackComponent from "../auth/GoogleCallbackComponent";
+import TwitchCallbackComponent from "../auth/TwitchCallbackComponent";
 
 function SignInModalTab({ modalSign }) {
   const handleButtonClick = () => {
@@ -54,6 +56,8 @@ function SignInModalTab({ modalSign }) {
                 </div>
                 <div className="flex items-center w-full">
                   <GithubCallbackComponent />
+                  <GoogleCallbackComponent />
+                  <TwitchCallbackComponent />
                 </div>
               </div>
             </div>
