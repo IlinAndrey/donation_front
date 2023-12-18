@@ -16,7 +16,7 @@ const GithubCallbackComponent = () => {
         const response = await axios.post(
           `http://127.0.0.1:8000/dj-rest-auth/twitch/callback`,
           {
-            access_token
+            code: access_token
           },
           {
             credentials: "include",

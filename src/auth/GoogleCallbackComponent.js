@@ -4,11 +4,12 @@ import axios from "axios";
 
 const GithubCallbackComponent = () => {
   const [postData, setPostData] = useState(null);
-  const location = useLocation();
 
-  const hash = window.location.hash;
-  const searchParams = new URLSearchParams(hash.slice(1));
-  const access_token = searchParams.get("access_token");
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const code = searchParams.get("code");
+
+  console.log(code);
 
   useEffect(() => {
     const handleLoginYouTube = async () => {
@@ -16,7 +17,7 @@ const GithubCallbackComponent = () => {
         const response = await axios.post(
           `http://127.0.0.1:8000/dj-rest-auth/youtube/`,
           {
-            code: access_token
+            code: decodeURIComponent(code)
           },
           {
             withCredentials: true,
@@ -36,15 +37,15 @@ const GithubCallbackComponent = () => {
 
     if (
       location.pathname === "/dj-rest-auth/youtube/callback" &&
-      access_token !== null
+      code !== null
     ) {
       handleLoginYouTube();
     }
-  }, [access_token]);
+  }, [code]);
 
   const handleButtonClickYoutube = () => {
     window.location.href =
-      "https://accounts.google.com/o/oauth2/v2/auth?scope=https%3A//www.googleapis.com/auth/userinfo.profile&include_granted_scopes=true&response_type=token&redirect_uri=http://127.0.0.1:3000/dj-rest-auth/youtube/callback&client_id=331102906826-kckt6tnfn6chfdnihj58rs2kthh7sf76.apps.googleusercontent.com";
+      "https://accounts.google.com/o/oauth2/v2/auth?scope=https%3A//www.googleapis.com/auth/userinfo.profile&include_granted_scopes=true&response_type=code&redirect_uri=http://127.0.0.1:3000/dj-rest-auth/youtube/callback&client_id=331102906826-kckt6tnfn6chfdnihj58rs2kthh7sf76.apps.googleusercontent.com";
   };
 
   return (
