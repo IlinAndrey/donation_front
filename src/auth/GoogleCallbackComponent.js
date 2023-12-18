@@ -17,7 +17,7 @@ const GithubCallbackComponent = () => {
         const response = await axios.post(
           `http://127.0.0.1:8000/dj-rest-auth/youtube/`,
           {
-            code: decodeURIComponent(code)
+            code: decodeURIComponent(code),
           },
           {
             withCredentials: true,
@@ -45,7 +45,7 @@ const GithubCallbackComponent = () => {
 
   const handleButtonClickYoutube = () => {
     window.location.href =
-      "https://accounts.google.com/o/oauth2/v2/auth?scope=https%3A//www.googleapis.com/auth/userinfo.profile&include_granted_scopes=true&response_type=code&redirect_uri=http://127.0.0.1:3000/dj-rest-auth/youtube/callback&client_id=331102906826-kckt6tnfn6chfdnihj58rs2kthh7sf76.apps.googleusercontent.com";
+      "https://accounts.google.com/o/oauth2/v2/auth?scope=https%3A//www.googleapis.com/auth/userinfo.profile&include_granted_scopes=true&response_type=code&redirect_uri=http://127.0.0.1:3000/dj-rest-auth/youtube/callback&client_id=1044043285606-ks8hr8g1ds12de1uu0slsli4r7014060.apps.googleusercontent.com";
   };
 
   return (

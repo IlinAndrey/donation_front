@@ -6,28 +6,21 @@ const GithubCallbackComponent = () => {
   const [postData, setPostData] = useState(null);
   const location = useLocation();
 
-  const hash = window.location.hash;
-  const searchParams = new URLSearchParams(hash.slice(1));
-  const access_token = searchParams.get("access_token");
+  const searchParams = new URLSearchParams(location.search);
+  const code = searchParams.get("code");
+
+  console.log(code);
 
   useEffect(() => {
     const handleLoginTwitch = async () => {
       try {
         const response = await axios.post(
-          `http://127.0.0.1:8000/dj-rest-auth/twitch/callback`,
+          `http://127.0.0.1:8000/dj-rest-auth/twitch/`,
           {
-            code: access_token
-          },
-          {
-            credentials: "include",
+            code: decodeURIComponent(code),
           },
           {
             withCredentials: true,
-            headers: {
-              "Content-Type": "application/json",
-              "Access-Control-Allow-Headers": "*",
-              "Access-Control-Allow-Credentials": "true",
-            },
           }
         );
         console.log(response);
@@ -44,15 +37,15 @@ const GithubCallbackComponent = () => {
 
     if (
       location.pathname === "/dj-rest-auth/twitch/callback" &&
-      access_token !== null
+      code !== null
     ) {
       handleLoginTwitch();
     }
-  }, [access_token]);
+  }, [code]);
 
   const handleButtonClickTwitch = () => {
     window.location.href =
-      "https://id.twitch.tv/oauth2/authorize?response_type=token&client_id=ll2vrkwu5ct9n2tm163cykmd0n3ort&redirect_uri=http://localhost.com:3000/dj-rest-auth/twitch/callback&scope=user%3Aread%3Aemail";
+      "https://id.twitch.tv/oauth2/authorize?response_type=code&client_id=ll2vrkwu5ct9n2tm163cykmd0n3ort&redirect_uri=http://localhost:3000/dj-rest-auth/twitch/callback&scope=user%3Aread%3Aemail";
   };
 
   return (
