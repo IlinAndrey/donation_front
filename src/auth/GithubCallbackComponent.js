@@ -1,17 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import axios from "axios";
-import GitHubIcon from "@mui/icons-material/GitHub";
-import Cookies from "js-cookie";
 
 const GithubCallbackComponent = () => {
-  const [token, setToken] = useState("");
-  const [user, setUser] = useState("");
   const [postData, setPostData] = useState(null);
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const code = searchParams.get("code");
-  const navigate = useNavigate();
 
   useEffect(() => {
     const handleLoginGit = async () => {

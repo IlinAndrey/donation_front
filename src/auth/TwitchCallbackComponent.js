@@ -1,25 +1,22 @@
 import React, { useEffect, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import axios from "axios";
-import GitHubIcon from "@mui/icons-material/GitHub";
-import Cookies from "js-cookie";
 
 const GithubCallbackComponent = () => {
-  const [token, setToken] = useState("");
-  const [user, setUser] = useState("");
   const [postData, setPostData] = useState(null);
   const location = useLocation();
-  const searchParams = new URLSearchParams(location.search);
-  const code = searchParams.get("code");
-  const navigate = useNavigate();
+
+  const hash = window.location.hash;
+  const searchParams = new URLSearchParams(hash.slice(1));
+  const access_token = searchParams.get("access_token");
 
   useEffect(() => {
-    const handleLoginGit = async () => {
+    const handleLoginTwitch = async () => {
       try {
         const response = await axios.post(
-          `http://127.0.0.1:8000/dj-rest-auth/github/`,
+          `http://127.0.0.1:8000/dj-rest-auth/twitch/callback`,
           {
-            code: code,
+            access_token
           },
           {
             credentials: "include",
@@ -38,7 +35,7 @@ const GithubCallbackComponent = () => {
           Date.now() + 7 * 24 * 60 * 60 * 1000
         ).toUTCString()}; path=/`;
         setPostData(response.data);
-        window.location.href = response.data.next || "/";
+        // window.location.href = response.data.next || "/";
       } catch (error) {
         console.error("Ошибка выхода:", error);
         console.log("Net");
@@ -46,24 +43,24 @@ const GithubCallbackComponent = () => {
     };
 
     if (
-      location.pathname === "/dj-rest-auth/github/callback" &&
-      code !== null
+      location.pathname === "/dj-rest-auth/twitch/callback" &&
+      access_token !== null
     ) {
-      handleLoginGit();
+      handleLoginTwitch();
     }
-  }, [code]);
+  }, [access_token]);
 
-  const handleButtonClick = () => {
+  const handleButtonClickTwitch = () => {
     window.location.href =
-      "https://github.com/login/oauth/authorize?client_id=Iv1.9e1ed9594dd98e77&redirect_uri=http://127.0.0.1:3000/dj-rest-auth/github/callback";
+      "https://id.twitch.tv/oauth2/authorize?response_type=token&client_id=ll2vrkwu5ct9n2tm163cykmd0n3ort&redirect_uri=http://localhost.com:3000/dj-rest-auth/twitch/callback&scope=user%3Aread%3Aemail";
   };
 
   return (
     <div>
       <button
-        onClick={handleButtonClick}
+        onClick={handleButtonClickTwitch}
         type="button"
-        class="m-4 text-white bg-[#bc42f4] hover:bg-[#bc42f4]/90 focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#4285F4]/55 me-2 mb-2"
+        className="m-4 text-white bg-[#bc42f4] hover:bg-[#bc42f4]/90 focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#4285F4]/55 me-2 mb-2"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"

@@ -6,6 +6,8 @@ import { useClickOutside } from "./functions/useClickOutside";
 import SomePage from "./pages/SendData";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import GithubCallbackComponent from "./auth/GithubCallbackComponent";
+import GoogleCallbackComponent from "./auth/GoogleCallbackComponent";
+import TwitchCallbackComponent from "./auth/TwitchCallbackComponent";
 import сookies from "js-cookie";
 import axios from "axios";
 import BlankPage from "./pages/BlankPage";
@@ -111,6 +113,16 @@ function App() {
               path="/dj-rest-auth/github/callback"
               exact
               element={<GithubCallbackComponent />}
+            />
+            <Route
+              path="/dj-rest-auth/youtube/callback"
+              exact
+              element={<GoogleCallbackComponent />}
+            />
+            <Route
+              path="/dj-rest-auth/twitch/callback"
+              exact
+              element={<TwitchCallbackComponent />}
             />
             <Route
               path="/dashboard"

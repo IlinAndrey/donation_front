@@ -13,7 +13,7 @@ function SendData() {
     duration: 0,
   });
 
-  console.log(formData)
+  console.log(formData);
 
   const handleWidget = async () => {
     const formDataToSend = new FormData();
@@ -25,7 +25,10 @@ function SendData() {
     try {
       const response = await axios.post(
         "http://127.0.0.1:8000/widgets/donations/",
-        formDataToSend
+        formDataToSend,
+        {
+          withCredentials: true,
+        }
       );
       console.log(response);
     } catch (error) {
@@ -47,7 +50,6 @@ function SendData() {
       [name]: value,
     });
   };
-
 
   return (
     <DndProvider backend={HTML5Backend}>
