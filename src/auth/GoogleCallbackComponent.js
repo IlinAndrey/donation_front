@@ -10,12 +10,13 @@ const GithubCallbackComponent = () => {
   const code = searchParams.get("code");
 
   console.log(code);
+  document.cookie = "auth_method=google";
 
   useEffect(() => {
     const handleLoginYouTube = async () => {
       try {
         const response = await axios.post(
-          `http://127.0.0.1:8000/dj-rest-auth/youtube/`,
+          `http://${process.env.REACT_APP_ADDR}:8000/dj-rest-auth/youtube/`,
           {
             code: decodeURIComponent(code),
           },

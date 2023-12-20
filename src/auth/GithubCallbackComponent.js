@@ -8,11 +8,13 @@ const GithubCallbackComponent = () => {
   const searchParams = new URLSearchParams(location.search);
   const code = searchParams.get("code");
 
+  document.cookie = "auth_method=github";
+
   useEffect(() => {
     const handleLoginGit = async () => {
       try {
         const response = await axios.post(
-          `http://127.0.0.1:8000/dj-rest-auth/github/`,
+          `http://${process.env.REACT_APP_ADDR}:8000/dj-rest-auth/github/`,
           {
             code: code,
           },

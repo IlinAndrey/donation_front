@@ -192,6 +192,8 @@ function Header({ toggleDarkMode, darkMode, isAuthenticated, user }) {
                               onClick={() => {
                                 document.cookie =
                                   "jwt-auth=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                                  document.cookie =
+                                  "auth_method=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
                                 window.location.reload();
                               }}
                               className="flex items-center text-sm text-red-500 dark:text-red-400 right-0 mr-5 absolute"

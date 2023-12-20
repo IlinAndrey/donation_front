@@ -10,12 +10,13 @@ const GithubCallbackComponent = () => {
   const code = searchParams.get("code");
 
   console.log(code);
+  document.cookie = "auth_method=twitch";
 
   useEffect(() => {
     const handleLoginTwitch = async () => {
       try {
         const response = await axios.post(
-          `http://127.0.0.1:8000/dj-rest-auth/twitch/`,
+          `http://${process.env.REACT_APP_ADDR}:8000/dj-rest-auth/twitch/`,
           {
             code: decodeURIComponent(code),
           },
@@ -28,7 +29,7 @@ const GithubCallbackComponent = () => {
           Date.now() + 7 * 24 * 60 * 60 * 1000
         ).toUTCString()}; path=/`;
         setPostData(response.data);
-        // window.location.href = response.data.next || "/";
+        window.location.href = response.data.next || "/";
       } catch (error) {
         console.error("Ошибка выхода:", error);
         console.log("Net");
